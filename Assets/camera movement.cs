@@ -7,7 +7,7 @@ using UnityEngine.Animations;
 public class cameramovement : MonoBehaviour
 {
     public PlayerMovement player;
-    private float sensitivity = 500f;
+    private float sensitivity = 200;
     private float clampAngle = 85f;
 
     private float verticalRotation;
@@ -30,12 +30,13 @@ public class cameramovement : MonoBehaviour
         float mouseVertical = -Input.GetAxis("Mouse Y");
         float mouseHorizontal = Input.GetAxis("Mouse X");
 
-        this.verticalRotation += mouseVertical * sensitivity * Time.deltaTime;
-        this.horizontalRotation += mouseHorizontal * sensitivity * Time.deltaTime;
+        this.verticalRotation += mouseVertical * this.sensitivity * Time.deltaTime;
+        this.horizontalRotation += mouseHorizontal * this.sensitivity * Time.deltaTime;
 
-        this.verticalRotation += Mathf.Clamp(this.verticalRotation, -this.clampAngle, clampAngle);
+        this.verticalRotation = Mathf.Clamp(this.verticalRotation, -this.clampAngle, this.clampAngle);
 
         this.transform.localRotation = Quaternion.Euler(this.verticalRotation, 0f, 0f);
-        this.player.transform.rotation = Quaternion.Euler()
+        this.player.transform.rotation = Quaternion.Euler(0f, this.horizontalRotation, 0f);
+
     }
 }
