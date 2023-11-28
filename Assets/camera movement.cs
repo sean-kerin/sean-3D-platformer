@@ -1,37 +1,41 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public class cameramovement : MonoBehaviour
 {
-    Rigidbody rb;
-    float maxSpeed = 1.0f;
-    float rotation = 0.0f;
-    float camRotation = 0.0f;
-    float rotationSpeed = 2.0f;
-    float camRotationSpeed = 1.5f;
-    Rigidbody myRigidBody;
-    GameObject cam;
-    public float movementSpeed = 6f;
-    [SerializeField] float jumpForce = 5f;
-    // Start is called before the first frame update
-    void Start()
+    public PlayerMovement player;
+    private float sensitivity = 500f;
+    private float clampAngle = 85f;
+
+    private float verticalRotation;
+    private float horizontalRotation;
+
+    private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        this.verticalRotation = this.transform.localEulerAngles.x;
+        this.horizontalRotation = this.transform.eulerAngles.y;
     }
 
-    // Update is called once per frame
-    void Update()
-    
-        {
-            float horizontalInput = Input.GetAxis("Horizontal");
-            float verticalInput = Input.GetAxis("vertical");
+    private void Update()
+    {
+        Look();
+        Debug.DrawRay(this.transform.position, this.transform.forward * 2, Color.red);
+    }
 
-            rb.velocity = new Vector3(horizontalInput * movementSpeed, rb.velocity.y, verticalInput * movementSpeed);
-            if (Input.GetButtonDown("Jump"))
-            {
-                rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
-            }
-        }
-    
+    private void Look()
+    {
+        float mouseVertical = -Input.GetAxis("Mouse Y");
+        float mouseHorizontal = Input.GetAxis("Mouse X");
+
+        this.verticalRotation += mouseVertical * sensitivity * Time.deltaTime;
+        this.horizontalRotation += mouseHorizontal * sensitivity * Time.deltaTime;
+
+        this.verticalRotation += Mathf.Clamp(this.verticalRotation, -this.clampAngle, clampAngle);
+
+        this.transform.localRotation = Quaternion.Euler(this.verticalRotation, 0f, 0f);
+        this.player.transform.rotation = Quaternion.Euler()
+    }
 }
