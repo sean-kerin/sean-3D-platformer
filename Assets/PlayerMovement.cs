@@ -27,6 +27,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
+<<<<<<< HEAD
         {
 
             float horizontalInput = Input.GetAxis("Horizontal");
@@ -39,6 +40,9 @@ public class PlayerMovement : MonoBehaviour
                 rb.velocity = new Vector3(rb.velocity.x, jumpforce, rb.velocity.z);
             }
         }
+=======
+        
+>>>>>>> 42d48450bf74af48b4163ba058408dd2228e37ab
 
         bool IsGrounded()
         {
