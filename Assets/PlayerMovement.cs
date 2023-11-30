@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     float maxSpeed = 1.0f;
     float rotation = 0.0f;
-    float camRotation = 0.0f;
+    float camRotation = 1.0f;
     float rotationSpeed = 2.0f;
     float camRotationSpeed = 1.5f;
     Rigidbody myRigidBody;
@@ -18,42 +18,36 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] Transform groundCheck;
     [SerializeField] LayerMask ground;
-   
+
     void Start()
     {
         cam = GameObject.Find("Main Camera");
         rb = GetComponent<Rigidbody>();
     }
-  
+
     void Update()
     {
+
         {
-            Vector3 newVelocity = transform.forward * Input.GetAxis("vertoical") * maxSpeed;
-            myRigidBody.velocity = new Vector3(newVelocity.x, myRigidBody.velocity.y, newVelocity.z);
 
-            rotation = rotation + Input.GetAxis("Mouse X");
-            transform.rotation = Quaternion.Euler(new Vector3(0.0f, rotation, 0.0f));
+            float horizontalInput = Input.GetAxis("Horizontal");
+            float verticalInput = Input.GetAxis("Vertical");
 
-            camRotation = camRotation - Input.GetAxis("Mouse Y") * camRotationSpeed;
+            rb.velocity = new Vector3(horizontalInput * movementspeed, rb.velocity.y, verticalInput * movementspeed);
 
-            camRotation = Mathf.Clamp(camRotation, -40.0f, 40.0f);
-
-            cam.transform.localRotation = Quaternion.Euler(new Vector3(camRotation, 0.0f, 0.0f));
+            if (Input.GetButtonDown("Jump") && IsGrounded())
+            {
+                rb.velocity = new Vector3(rb.velocity.x, jumpforce, rb.velocity.z);
+            }
         }
 
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-        
-         rb.velocity = new Vector3(horizontalInput * movementspeed, rb.velocity.y, verticalInput * movementspeed);
-       
-        if (Input.GetButtonDown("Jump") && IsGrounded())
+
+        bool IsGrounded()
         {
-            rb.velocity = new Vector3(rb.velocity.x , jumpforce, rb.velocity.z);
+            return Physics.CheckSphere(groundCheck.position, .1f, ground);
+
         }
+
     }
-    
-    bool IsGrounded ()
-    {
-        return Physics.CheckSphere(groundCheck.position, .1f, ground);
-    }
-    }
+
+}
