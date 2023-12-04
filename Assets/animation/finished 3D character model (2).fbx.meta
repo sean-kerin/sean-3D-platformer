@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/animation/finished 3D character model (2).fbx.meta
 guid: 8e53ec0172e4d5d4ebad51ba85268902
+========
+guid: 26e3b0fc63743e84ca9ee14ba1ae2e94
+>>>>>>>> f04d176aeb1000fe01692f048dcf9749d206bd4f:Assets/animation/model@Idle (1).fbx.meta
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []

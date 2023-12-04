@@ -6,7 +6,7 @@ public class PlayerMovement : MonoBehaviour
 {
     float maxSpeed = 1.0f;
     float rotation = 0.0f;
-    float camRotation = 0.0f;
+    float camRotation = 1.0f;
     float rotationSpeed = 2.0f;
     float camRotationSpeed = 1.5f;
     Rigidbody myRigidBody;
@@ -18,30 +18,36 @@ public class PlayerMovement : MonoBehaviour
 
     [SerializeField] Transform groundCheck;
     [SerializeField] LayerMask ground;
-   
+
     void Start()
     {
         cam = GameObject.Find("Main Camera");
         rb = GetComponent<Rigidbody>();
     }
-  
+
     void Update()
     {
-        
 
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-        
-         rb.velocity = new Vector3(horizontalInput * movementspeed, rb.velocity.y, verticalInput * movementspeed);
-       
-        if (Input.GetButtonDown("Jump") && IsGrounded())
         {
-            rb.velocity = new Vector3(rb.velocity.x , jumpforce, rb.velocity.z);
+
+            float horizontalInput = Input.GetAxis("Horizontal");
+            float verticalInput = Input.GetAxis("Vertical");
+
+            rb.velocity = new Vector3(horizontalInput * movementspeed, rb.velocity.y, verticalInput * movementspeed);
+
+            if (Input.GetButtonDown("Jump") && IsGrounded())
+            {
+                rb.velocity = new Vector3(rb.velocity.x, jumpforce, rb.velocity.z);
+            }
         }
+
+
+        bool IsGrounded()
+        {
+            return Physics.CheckSphere(groundCheck.position, .1f, ground);
+
+        }
+
     }
-    
-    bool IsGrounded ()
-    {
-        return Physics.CheckSphere(groundCheck.position, .1f, ground);
-    }
-    }
+
+}
